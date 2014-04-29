@@ -1,4 +1,4 @@
-// Copyright 1998-2014 Epic Games, Inc. All Rights Reserved.
+// Teddy0@gmail.com
 
 #pragma once
 
@@ -20,6 +20,9 @@ class AUE4RollercoasterPlayerController : public APlayerController
 	class ULandscapeSplinesComponent* TrackSplines;
 
 	UPROPERTY()
+	TArray<class ULandscapeSplineSegment*> OrderedSegments;
+
+	UPROPERTY()
 	int32 CurentSegmentIdx;
 
 	UPROPERTY()
@@ -31,11 +34,23 @@ class AUE4RollercoasterPlayerController : public APlayerController
 	UPROPERTY()
 	FVector CameraOffset;
 
-	UPROPERTY()
+	UPROPERTY(BlueprintReadOnly, Category = PlayerController)
 	float CurrentRollerCoasterVelocity;
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = PlayerController)
 	float RollerCoasterVelocity;
+
+	UPROPERTY(config)
+	bool ConfigCameraPitch;
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = PlayerController)
+	bool BlueprintCameraPitch;
+
+	UPROPERTY(config)
+	bool ConfigCameraRoll;
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = PlayerController)
+	bool BlueprintCameraRoll;
 
 public:
 	/**
@@ -43,6 +58,10 @@ public:
 	* PlayerTick is only called if the PlayerController has a PlayerInput object. Therefore, it will only be called for locally controlled PlayerControllers.
 	*/
 	virtual void PlayerTick(float DeltaTime);
+
+	//Init functions
+	virtual void Possess(APawn* PawnToPossess);
+	virtual void UnPossess();
 
 	/**
 	* Updates the rotation of player, based on ControlRotation after RotationInput has been applied.
